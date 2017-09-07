@@ -34,8 +34,8 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    return len(game.get_legal_moves())
+    # DONE: finish this function!
+    return float(len(game.get_legal_moves()))
     #raise NotImplementedError
 
 
@@ -61,8 +61,8 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    return len(game.get_legal_moves()) - len(game.get_opponent.get_legal_moves())
+    # DONE: finish this function!
+    return float(len(game.get_legal_moves()))
 
 
 def custom_score_3(game, player):
@@ -87,8 +87,8 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    return len(game.get_legal_moves())
+    # DONE: finish this function!
+    return float(len(game.get_legal_moves()))
 
 class IsolationPlayer:
     """Base class for minimax and alphabeta agents -- this class is never
@@ -176,19 +176,24 @@ class MinimaxPlayer(IsolationPlayer):
         depth is reached
         FALSE otherwise
         """
+        #print("Legal moves length:", len(game.get_legal_moves()), "Game depth:", depth)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         return len(game.get_legal_moves()) == 0 or depth <= 0
     
     def min_value(self, game, depth):
         """
-        Returns the value of a win (+1) if the game is over
+        Returns the value of a win if the game is over
         Otherwise returns minimum value over all legal child nodes
         """
+        #print("Inside MIN_VALUE, active player:", game.active_player)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()        
         if self.terminal_test(game, depth):
-            return 1
+            if len(game.get_legal_moves()) > 0:
+                return self.score(game, game.active_player)
+            else:
+                return float("-Inf")
         state_val = []
         for move in game.get_legal_moves():
             state_val.append(self.max_value(game.forecast_move(move), depth - 1))
@@ -196,13 +201,17 @@ class MinimaxPlayer(IsolationPlayer):
 
     def max_value(self, game, depth):
         """
-        Returns the value of a loss (-1) if the game is over
+        Returns the value of a loss if the game is over
         Otherwise returns maximum value over all legal child nodes
         """
+        #print("Inside MAX_VALUE, active player:", game.active_player)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if self.terminal_test(game, depth):
-            return -1
+            if len(game.get_legal_moves()) > 0:
+                return self.score(game, game.active_player)
+            else:
+                return float("-Inf")
         state_val = []
         for move in game.get_legal_moves():
             state_val.append(self.min_value(game.forecast_move(move), depth - 1))
@@ -251,15 +260,20 @@ class MinimaxPlayer(IsolationPlayer):
         """
 
         # DONE: finish this function!
-        print("Minimax STARTED")
+        print("Minimax STARTED, depth = ", depth)
+        #print("Active player:", game.active_player)
+        #print(game.get_legal_moves())
         moves_list = game.get_legal_moves()
+        #print("Moves list:", moves_list, ", Length:", len(moves_list))
         maximum = -float("Inf")
         max_index = 0
         for i in range(len(moves_list)):
-            value = self.min_value(game.forecast_move(moves_list[i]), depth)
+            value = self.min_value(game.forecast_move(moves_list[i]), depth - 1)
+            #print("Value found for", moves_list[i], ":", value)
             if value > maximum:
                 maximum = value
                 max_index = i
+        print(moves_list[max_index])
         return moves_list[max_index]
         #raise NotImplementedError
 

@@ -21,8 +21,9 @@ class IsolationTest(unittest.TestCase):
         self.game = isolation.Board(self.player1, self.player2)
 
     def test_1(self):
-        print(self.game.play()[2])
-        self.assertEqual(type(self.game.play()[0]).__name__, "MinimaxPlayer")
+        result = self.game.play()
+        print(result[2])
+        self.assertEqual(type(result[0]).__name__, "MinimaxPlayer")
 
 if __name__ == '__main__':
     unittest.main()

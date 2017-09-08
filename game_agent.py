@@ -176,7 +176,6 @@ class MinimaxPlayer(IsolationPlayer):
         depth is reached
         FALSE otherwise
         """
-        #print("Legal moves length:", len(game.get_legal_moves()), "Game depth:", depth)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         return len(game.get_legal_moves()) == 0 or depth <= 0
@@ -186,14 +185,13 @@ class MinimaxPlayer(IsolationPlayer):
         Returns the value of a win if the game is over
         Otherwise returns minimum value over all legal child nodes
         """
-        #print("Inside MIN_VALUE, active player:", game.active_player)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()        
         if self.terminal_test(game, depth):
             if len(game.get_legal_moves()) > 0:
-                return self.score(game, game.active_player)
+                return self.score(game, self)
             else:
-                return float("-Inf")
+                return float("Inf")
         state_val = []
         for move in game.get_legal_moves():
             state_val.append(self.max_value(game.forecast_move(move), depth - 1))
@@ -204,14 +202,13 @@ class MinimaxPlayer(IsolationPlayer):
         Returns the value of a loss if the game is over
         Otherwise returns maximum value over all legal child nodes
         """
-        #print("Inside MAX_VALUE, active player:", game.active_player)
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if self.terminal_test(game, depth):
             if len(game.get_legal_moves()) > 0:
-                return self.score(game, game.active_player)
+                return self.score(game, self)
             else:
-                return float("-Inf")
+                return -float("Inf")
         state_val = []
         for move in game.get_legal_moves():
             state_val.append(self.min_value(game.forecast_move(move), depth - 1))
@@ -260,22 +257,15 @@ class MinimaxPlayer(IsolationPlayer):
         """
 
         # DONE: finish this function!
-        print("Minimax STARTED, depth = ", depth)
-        #print("Active player:", game.active_player)
-        #print(game.get_legal_moves())
         moves_list = game.get_legal_moves()
-        #print("Moves list:", moves_list, ", Length:", len(moves_list))
         maximum = -float("Inf")
         max_index = 0
         for i in range(len(moves_list)):
             value = self.min_value(game.forecast_move(moves_list[i]), depth - 1)
-            #print("Value found for", moves_list[i], ":", value)
             if value > maximum:
                 maximum = value
                 max_index = i
-        print(moves_list[max_index])
         return moves_list[max_index]
-        #raise NotImplementedError
 
 
 class AlphaBetaPlayer(IsolationPlayer):

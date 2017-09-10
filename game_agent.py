@@ -3,6 +3,8 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 
+import math
+
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
     pass
@@ -41,7 +43,8 @@ def custom_score(game, player):
 
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    #free_squares = math.sqrt(len(game.get_blank_spaces()))
+    return float(own_moves - opp_moves + 5.0 * own_moves / (opp_moves + .001))
 
 
 def custom_score_2(game, player):
@@ -71,8 +74,12 @@ def custom_score_2(game, player):
 
     if game.is_winner(player):
         return float("inf")
+
+    own_moves = float(len(game.get_legal_moves(player)) + 0.01)
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))) + 0.01)
+
     # DONE: finish this function!
-    return float(len(game.get_legal_moves()))
+    return own_moves + own_moves / opp_moves
 
 
 def custom_score_3(game, player):

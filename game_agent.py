@@ -3,7 +3,6 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 
-import math
 import numpy as np
 
 class SearchTimeout(Exception):
@@ -11,12 +10,26 @@ class SearchTimeout(Exception):
     pass
 
 def center_distance(game, moves_list):
+    """
+    Returns average euclidean distance for moves in move_list from the
+    board center
+    """
     if len(moves_list) == 0:
         return -float("Inf")
     center_coord = (float(game.width) / 2, float(game.height) / 2)
     dist = np.sqrt(np.sum((moves_list - center_coord)**2))
     #print(dist)
     return dist
+
+def players_distance(game, player):
+    """
+    Returns euclidean distance between the player and its opponent
+    """
+    player_pos = np.array(game.get_player_location(player))
+    opp_pos = np.array(game.get_player_location(game.get_opponent(player)))
+    #print(player_pos, opp_pos, np.sqrt((player_pos[0] - opp_pos[0])**2 + 
+    #                                   (player_pos[1] - opp_pos[1])**2))
+    return np.linalg.norm(player_pos - opp_pos)
 
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -49,17 +62,22 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    own_moves = game.get_legal_moves(player)
-    opp_moves = game.get_legal_moves(game.get_opponent(player))
-    own_dist = center_distance(game, np.array(own_moves))
-    opp_dist = center_distance(game, np.array(opp_moves))
     n_moves = game.width * game.height - len(game.get_blank_spaces())
-    #free_squares = math.sqrt(len(game.get_blank_spaces()))
-    n_own_moves = len(own_moves) + 0.01
-    n_opp_moves = len(opp_moves) + 0.01
-    score = (n_own_moves - n_opp_moves) + \
-            n_own_moves / n_opp_moves + \
-            (own_dist) * 5 / n_moves
+    if n_moves < 8:
+        distance = players_distance(game, player)
+        score = -distance
+    else:
+        own_moves = game.get_legal_moves(player)
+        opp_moves = game.get_legal_moves(game.get_opponent(player))
+        #own_dist = center_distance(game, np.array(own_moves))
+        #opp_dist = center_distance(game, np.array(opp_moves))
+        #free_squares = math.sqrt(len(game.get_blank_spaces()))
+        n_own_moves = len(own_moves) + 0.01
+        n_opp_moves = len(opp_moves) + 0.01
+        score = n_own_moves - n_opp_moves
+    #score = (n_own_moves - n_opp_moves) + \
+    #        n_own_moves / n_opp_moves + \
+    #        (own_dist) * 5 / n_moves
     #print("Stage ", n_moves, "Score: ", score, 
     #      "Distance addon: ", (own_dist - opp_dist) * 10 / n_moves)
     return score

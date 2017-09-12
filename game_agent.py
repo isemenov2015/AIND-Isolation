@@ -23,13 +23,18 @@ def center_distance(game, moves_list):
 
 def check_killer(game, moves_list):
     """
-    Retuns +Inf, if there is a move that wins the game in the moves_list
+    'Killer' / 'Antikiller' strategy implementation
+    Returns +Inf, if there is a move that wins the game in the moves_list
+    Returns 0 otherwise
     """
     for move in moves_list:
         new_board = game.forecast_move(move)
-        if new_board.is_winner(new_board.active_player):
-            print("Inf found")
+        if new_board.is_loser(new_board.active_player):
             return float("Inf")
+        #if new_board.is_winner(new_board.inactive_player):
+        #    return -float("Inf")
+        #if new_board.is_winner(new_board.active_player):
+        #    return float("Inf")
     return 0
 
 def players_distance(game, player):
@@ -73,21 +78,19 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    n_moves = game.width * game.height - len(game.get_blank_spaces())
-    if n_moves < game.width * game.height * .25:
-        distance = players_distance(game, player)
-        score = -distance
-    else:
-        own_moves = game.get_legal_moves(player)
-        opp_moves = game.get_legal_moves(game.get_opponent(player))
+    #n_moves = game.width * game.height - len(game.get_blank_spaces())
+    own_moves = game.get_legal_moves(player)
+    opp_moves = game.get_legal_moves(game.get_opponent(player))
         #own_dist = center_distance(game, np.array(own_moves))
         #opp_dist = center_distance(game, np.array(opp_moves))
         #free_squares = math.sqrt(len(game.get_blank_spaces()))
-        n_own_moves = len(own_moves) + 0.01
-        n_opp_moves = len(opp_moves) + 0.01
-        killer_score = check_killer(game, own_moves)
+    n_own_moves = len(own_moves) + 0.01
+    n_opp_moves = len(opp_moves) + 0.01
+    killer_score = check_killer(game, own_moves)
         #print(killer_score)
-        score = n_own_moves - n_opp_moves + killer_score
+    #if killer_score != 0:
+    #    print('Killer worked!')
+    score = n_own_moves - n_opp_moves + killer_score
     #score = (n_own_moves - n_opp_moves) + \
     #        n_own_moves / n_opp_moves + \
     #        (own_dist) * 5 / n_moves

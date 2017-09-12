@@ -21,6 +21,17 @@ def center_distance(game, moves_list):
     #print(dist)
     return dist
 
+def check_killer(game, moves_list):
+    """
+    Retuns +Inf, if there is a move that wins the game in the moves_list
+    """
+    for move in moves_list:
+        new_board = game.forecast_move(move)
+        if new_board.is_winner(new_board.active_player):
+            print("Inf found")
+            return float("Inf")
+    return 0
+
 def players_distance(game, player):
     """
     Returns euclidean distance between the player and its opponent
@@ -63,7 +74,7 @@ def custom_score(game, player):
         return float("inf")
 
     n_moves = game.width * game.height - len(game.get_blank_spaces())
-    if n_moves < 8:
+    if n_moves < game.width * game.height * .25:
         distance = players_distance(game, player)
         score = -distance
     else:
@@ -74,7 +85,9 @@ def custom_score(game, player):
         #free_squares = math.sqrt(len(game.get_blank_spaces()))
         n_own_moves = len(own_moves) + 0.01
         n_opp_moves = len(opp_moves) + 0.01
-        score = n_own_moves - n_opp_moves
+        killer_score = check_killer(game, own_moves)
+        #print(killer_score)
+        score = n_own_moves - n_opp_moves + killer_score
     #score = (n_own_moves - n_opp_moves) + \
     #        n_own_moves / n_opp_moves + \
     #        (own_dist) * 5 / n_moves

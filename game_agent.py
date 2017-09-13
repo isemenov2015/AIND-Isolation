@@ -79,24 +79,17 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    #n_moves = game.width * game.height - len(game.get_blank_spaces())
     own_moves = game.get_legal_moves(player)
-    opp_moves = game.get_legal_moves(game.get_opponent(player))
-        #own_dist = center_distance(game, np.array(own_moves))
-        #opp_dist = center_distance(game, np.array(opp_moves))
-        #free_squares = math.sqrt(len(game.get_blank_spaces()))
-    n_own_moves = len(own_moves) + 0.01
-    n_opp_moves = len(opp_moves) + 0.01
+    n_moves = game.width * game.height - len(game.get_blank_spaces())
+    n_own_moves = float(len(own_moves))
+    n_opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
     killer_score = check_killer(game, own_moves)
-        #print(killer_score)
-    #if killer_score != 0:
-    #    print('Killer worked!')
-    score = n_own_moves - n_opp_moves + killer_score
-    #score = (n_own_moves - n_opp_moves) + \
-    #        n_own_moves / n_opp_moves + \
-    #        (own_dist) * 5 / n_moves
-    #print("Stage ", n_moves, "Score: ", score, 
-    #      "Distance addon: ", (own_dist - opp_dist) * 10 / n_moves)
+    
+    if n_moves < 7:
+        opp_freedom_weight = 3.0
+    else:
+        opp_freedom_weight = 0.2
+    score = n_own_moves - opp_freedom_weight * n_opp_moves + killer_score
     return score
 
 

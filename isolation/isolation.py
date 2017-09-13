@@ -209,7 +209,7 @@ class Board(object):
 
     def is_winner(self, player):
         """ Test whether the specified player has won the game. """
-        return player == self._inactive_player and not self.get_legal_moves(self._inactive_player)
+        return player == self._inactive_player and not self.get_legal_moves(self._active_player)
 
     def is_loser(self, player):
         """ Test whether the specified player has lost the game. """

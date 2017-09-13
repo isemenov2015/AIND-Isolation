@@ -18,18 +18,19 @@ def center_distance(game, moves_list):
         return -float("Inf")
     center_coord = (float(game.width) / 2, float(game.height) / 2)
     dist = np.sqrt(np.sum((moves_list - center_coord)**2))
-    #print(dist)
     return dist
 
 def check_killer(game, moves_list):
     """
-    'Killer' / 'Antikiller' strategy implementation
-    Returns +Inf, if there is a move that wins the game in the moves_list
+    'Killer' strategy implementation
+    Returns +Inf, if there is a move that loses the game in the moves_list
     Returns 0 otherwise
     """
     for move in moves_list:
         new_board = game.forecast_move(move)
-        if new_board.is_loser(new_board.active_player):
+        #print(new_board.active_player, new_board.is_loser(new_board.active_player))
+        if new_board.is_loser(game.inactive_player):
+            #print("Condition fired")
             return float("Inf")
         #if new_board.is_winner(new_board.inactive_player):
         #    return -float("Inf")

@@ -48,12 +48,8 @@ def players_distance(game, player):
     #                                   (player_pos[1] - opp_pos[1])**2))
     return np.linalg.norm(player_pos - opp_pos)
 
-def custom_score(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
-    This should be the best heuristic function for your project submission.
-
+def aggressive_score(game, player):
+    """
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
 
@@ -83,15 +79,56 @@ def custom_score(game, player):
     n_moves = game.width * game.height - len(game.get_blank_spaces())
     n_own_moves = float(len(own_moves))
     n_opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
-    killer_score = check_killer(game, own_moves)
     
     if n_moves < 7:
-        opp_freedom_weight = 3.0
+        opp_freedom_weight = 1.3
+        killer_score = 0
     else:
-        opp_freedom_weight = 0.2
+        opp_freedom_weight = .7
+        killer_score = check_killer(game, own_moves)
     score = n_own_moves - opp_freedom_weight * n_opp_moves + killer_score
     return score
 
+def custom_score(game, player):
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    This should be the best heuristic function for your project submission.
+
+    Added 'Killer' condition (checks if current player can definitely win 
+    in the next turn) to custom_score2
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    # DONE: finish this function!
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    n_moves = game.width * game.height - len(game.get_blank_spaces())
+    if n_moves < 6:
+        score = -players_distance(game, player)
+    else:
+        score = custom_score_2(game, player)
+    return score
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view

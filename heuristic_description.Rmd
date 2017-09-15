@@ -1,9 +1,20 @@
 ---
-title: "Heuristic analysis for Isolation project"
+title: "Heuristics analysis for Isolation game AI agent"
+subtitle: "Build a Game-Playing Agent project for Udacity AIND"
 author: "Ilya Semenov"
-date: '15 september 2017'
+date: '16 september 2017'
 output: pdf_document
 ---
+
+##Project description
+This document is a description of three custom heuristics developed for AI game-playing agent for Isolation game. The idea of the game is shown on a pic below. Two chess rooks are moving on a 7x7 board trying to lock each other. Game idea and rules are fully explained in the short  [_video_](https://www.youtube.com/watch?v=i8z3-fn4wDM)
+![Isolation gameboard with rooks as playing figures](isolation.png)
+
+##Problem introduction
+
+Project goal is to develop a heuristic that is better than AB_improved strategy developed by Udacity, more details available in the original [_project repository_](https://github.com/udacity/AIND-Isolation)
+
+##Heuristics comparison
 
 \begin{center}
 \textbf{Matches Results}
@@ -21,3 +32,7 @@ output: pdf_document
 |7   |AB_Improved   |8 / 2   |9 / 1   |6 / 4   |3 / 7   |
 |---|---|---|---|---|---|
 |   |Win Rate:   |65.7%   |77.1%   |80.0%   |65.7%   |
+
+#Summary
+
+

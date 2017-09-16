@@ -50,6 +50,9 @@ def players_distance(game, player):
 
 def aggressive_score(game, player):
     """
+    Tends to minimize the No of opponent's moves during first seven moves,
+    then tends to maximize No of own moves
+    
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
 
@@ -69,11 +72,6 @@ def aggressive_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # DONE: finish this function!
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
 
     own_moves = game.get_legal_moves(player)
     n_moves = game.width * game.height - len(game.get_blank_spaces())
@@ -90,8 +88,9 @@ def aggressive_score(game, player):
     return score
 
 def custom_score(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
+    """
+    Tries to keep the player as close to opponent as possible during
+    first six moves, then acts exactly like custom_score_2
 
     This should be the best heuristic function for your project submission.
 
@@ -131,8 +130,10 @@ def custom_score(game, player):
     return score
 
 def custom_score_2(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
+    """
+    Returns number of possible moves for the player plus the ratio
+    between number of player's and opponent's moves.
+    Adds 0.01 in ratio calculation to prevent zero division error
 
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
@@ -166,9 +167,10 @@ def custom_score_2(game, player):
 
 
 def custom_score_3(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
+    """
+    Tends to minimize the No of opponent's moves during first seven moves,
+    then tends to maximize No of own moves
+    
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
 
@@ -193,9 +195,7 @@ def custom_score_3(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    return aggressive_score(game, player)
 
 class IsolationPlayer:
     """Base class for minimax and alphabeta agents -- this class is never

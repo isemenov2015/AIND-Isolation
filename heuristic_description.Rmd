@@ -49,3 +49,9 @@ The only tuning parameter for this heuristic is No of moves before strategy swit
 All user heuristics described in a document are relatively simple due to computation efficiency requirement resultant from 150 ms per move time limit. Though this limit is processor speed dependant, choice for more simplicity were made to provide results reproducibility with the condition of unavailable preliminary information for reviewers computer power.
 
 'MOFE enhanced' strategy could be, at least slightly, improved further by avoiding corners during the first stage but this comes for a price of probable timeout warnings.
+
+Main reasons to select 'MOFE enhanced' as best strategy for the project are:
+
+* computation speed that allows to avoid timeouts
+* better win ratio perfomance _on average_ than AB_improved strategy provided by Udacity
+* low win ratio variance in different tournaments compared with other strategies tested

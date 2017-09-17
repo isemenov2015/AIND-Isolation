@@ -7,10 +7,29 @@ output: pdf_document
 
 #Goals summary
 
-The paper gives a thorough and reader friendly overview of the key ideas standing behind Deep Blue system. There are also some fruitful insights on architecture and key algorithms implementation. 
+The paper gives a thorough and reader friendly overview of the key ideas standing behind Deep Blue system. There are also some fruitful insights on architecture and key algorithms implementation.
+
+##Structure
+
+The paper consists of following main parts:
+* Deep Blue history with brief description of system predecessors
+* hardware overview mainly focused on architecture details. Most interesting part is a description of parallel computations infrastructure.
+* most intriguing part is algorithms overview including descriptions of Deep Blue specific positions tree search and position evaluation function.
+
+##Key points of interest
+
+Search procedure description includes pretty thorough description of constraints used for optimization of position tree search. Chess specific optimization heuristics such as _Extend forcing / forced pairs of moves_, _Fractional extensions_, _Dual credit_ etc. provide interesting clues on how subject area could be translated into algorithm design.
+
+Deep Blue is a highly parallel system and the paper has useful discussion on implementation and limitations of parallel search algorithm.
+
+As for evaluation functions the paper gives basic approach to its implementation together with really illustrative _Rooks on files_ example explaining the way of how chessmasters specific terminology could be evaluated and digitized for further position comparison.
 
 #Results summary
 
-* search description, including AB-pruning
-* position evaluation description
-* openings and endgames
+Main Deep Blue result is a victory in a match against best performing ever human opponent: Garry Kasparov. Furthemore, the paper is 16 years old and addressed rather to broad audience so it's hard to point exactly on definitely scientific result. But there are still enough reasons for thorough reading of the paper:
+
+* search optimization heuristics, including AB-pruning and parallel search
+* position evaluation description with extended real-life example
+* AI agent enhancement by adding openings end endgames database
+
+Deep Blue paper is a good example on how human-developed heuristics used for efficient chess play could be algorithmized and translated into AI.

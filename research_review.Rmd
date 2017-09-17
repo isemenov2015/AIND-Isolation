@@ -1,0 +1,16 @@
+---
+title: "Deep Blue paper review"
+author: "Ilya Semenov"
+date: '17 September 2017'
+output: pdf_document
+---
+
+#Goals summary
+
+The paper gives a thorough and reader friendly overview of the key ideas standing behind Deep Blue system. There are also some fruitful insights on architecture and key algorithms implementation. 
+
+#Results summary
+
+* search description, including AB-pruning
+* position evaluation description
+* openings and endgames
